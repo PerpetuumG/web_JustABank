@@ -124,3 +124,39 @@ nav.addEventListener('mouseout', (e) => navLinksHoverAnimation(e, 1))
 // 2 метод (вместо opacity указать this)
 nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4))
 nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1))
+
+
+// Sticky navigation
+// Bad version
+/*
+const section1Coords = section1.getBoundingClientRect()
+console.log(section1Coords)
+window.addEventListener('scroll', function (e) {
+    console.log(window.scrollY)
+
+    if (window.scrollY > section1Coords.top) {
+        nav.classList.add('sticky')
+    } else {
+        nav.classList.remove('sticky')
+    }
+})
+*/
+
+// Sticky navigation - Intersection Observer API
+// Good version
+const header = document.querySelector('.header')
+const navHeight = nav.getBoundingClientRect().height
+
+const getStickyNav = function (entries) {
+    const entry = entries[0]
+    !entry.isIntersecting
+        ? nav.classList.add('sticky')
+        : nav.classList.remove('sticky')
+}
+
+const observer = new IntersectionObserver(getStickyNav, {
+    root: null,
+    threshold: 0,
+    rootMargin: `-${navHeight}px`
+})
+observer.observe(header)
