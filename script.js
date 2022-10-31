@@ -1,13 +1,15 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modalWindow = document.querySelector('.modal-window');
 const overlay = document.querySelector('.overlay');
 const btnCloseModalWindow = document.querySelector('.btn--close-modal-window');
 const btnsOpenModalWindow = document.querySelectorAll('.btn--show-modal-window');
 
+const btnScrollTo = document.querySelector('.btn--scroll-to')
+const section1 = document.querySelector('#section--1')
+
+///////////////////////////////////////
+// Modal window
 const openModalWindow = function (e) {
     e.preventDefault()
     modalWindow.classList.remove('hidden');
@@ -34,28 +36,33 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-
 // Scroll
-const btnScrollTo = document.querySelector('.btn--scroll-to')
-const section1 = document.querySelector('#section--1')
+// Плавная прокрутка до первой секции
 btnScrollTo.addEventListener('click', (e) => {
-    /*e.preventDefault()
-    const section1Coords = section1.getBoundingClientRect()
-    console.log(section1Coords)
-    console.log(e.target.getBoundingClientRect())
-    console.log('Текущее прокручивание: x, y', window.pageXOffset, window.pageYOffset)
-
-    console.log('Ширина и высота viewport', document.documentElement.clientWidth, document.documentElement.clientHeight)*/
-
-    // window.scrollTo(section1Coords.left + window.pageXOffset, section1Coords.top + window.pageYOffset)
-
-    /*
-    window.scrollTo({
-        left: section1Coords.left + window.pageXOffset,
-        top: section1Coords.top + window.pageYOffset,
-        behavior: "smooth"
-    })
-    */
-
     section1.scrollIntoView({behavior: "smooth"})
+})
+
+
+// Smooth page navigation
+
+/*
+document.querySelectorAll('.nav__link').forEach(function (htmlElement) {
+    htmlElement.addEventListener('click', function (e) {
+        e.preventDefault()
+        const href = this.getAttribute('href')
+        console.log(href)
+        document.querySelector(href).scrollIntoView({behavior: "smooth"})
+    })
+})
+*/
+
+// Делегирование событий
+// 1. Добавляем event listener для ОБЩЕГО родителя
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+    e.preventDefault()
+    // 2. Определить target элемент
+    if (e.target.classList.contains('nav__link')) {
+        const href = e.target.getAttribute('href')
+        document.querySelector(href).scrollIntoView({behavior: "smooth"})
+    }
 })
