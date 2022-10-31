@@ -8,6 +8,12 @@ const btnsOpenModalWindow = document.querySelectorAll('.btn--show-modal-window')
 const btnScrollTo = document.querySelector('.btn--scroll-to')
 const section1 = document.querySelector('#section--1')
 
+const tabs = document.querySelectorAll('.operations__tab')
+const tabContainer = document.querySelector('.operations__tab-container')
+const tabContents = document.querySelectorAll('.operations__content')
+
+const nav = document.querySelector('.nav')
+
 ///////////////////////////////////////
 // Modal window
 const openModalWindow = function (e) {
@@ -70,9 +76,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 
 // Вкладки
-const tabs = document.querySelectorAll('.operations__tab')
-const tabContainer = document.querySelector('.operations__tab-container')
-const tabContents = document.querySelectorAll('.operations__content')
 
 tabContainer.addEventListener('click', function (e) {
     // e.preventDefault()
@@ -91,3 +94,33 @@ tabContainer.addEventListener('click', function (e) {
     tabContents.forEach((content) => content.classList.remove('operations__content--active'))
     document.querySelector(`.operations__content--${clickedButton.dataset.tab}`).classList.add('operations__content--active')
 })
+
+
+// Анимация потускнения на панели навигации
+
+const navLinksHoverAnimation = function (e) {
+    if (e.target.classList.contains('nav__link')) {
+        const linkOver = e.target
+        const siblingLinks = linkOver.closest('.nav__links').querySelectorAll('.nav__link')
+        const logo = linkOver.closest('.nav').querySelector('img')
+        const logoText = linkOver.closest('.nav').querySelector('.nav__text')
+
+        siblingLinks.forEach(el => {
+            if (el !== linkOver) {
+                el.style.opacity = this
+            }
+            logo.style.opacity = this
+            logoText.style.opacity = this
+        })
+    }
+}
+
+// 1 метод (вместо this указать opacity)
+/*
+nav.addEventListener('mouseover', (e) => navLinksHoverAnimation(e, 0.4))
+nav.addEventListener('mouseout', (e) => navLinksHoverAnimation(e, 1))
+*/
+
+// 2 метод (вместо opacity указать this)
+nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4))
+nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1))
