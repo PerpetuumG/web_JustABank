@@ -154,9 +154,30 @@ const getStickyNav = function (entries) {
         : nav.classList.remove('sticky')
 }
 
-const observer = new IntersectionObserver(getStickyNav, {
+const headerObserver = new IntersectionObserver(getStickyNav, {
     root: null,
     threshold: 0,
     rootMargin: `-${navHeight}px`
 })
-observer.observe(header)
+headerObserver.observe(header)
+
+
+// Появление частей сайта
+const allSection = document.querySelectorAll('.section')
+const appearanceSection = function (entries, observer) {
+    const entry = entries[0]
+    if (!entry.isIntersecting) {
+        return
+    }
+    entry.target.classList.remove('section--hidden')
+    observer.unobserve(entry.target)
+}
+
+const sectionObserver = new IntersectionObserver(appearanceSection, {
+    root: null,
+    threshold: 0.20,
+})
+allSection.forEach(function (section) {
+    sectionObserver.observe(section)
+    section.classList.add('section--hidden')
+})
